@@ -8,9 +8,10 @@ from datetime import datetime
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+from your_module import MultiColumnLabelEncoder  # import your custom class
 
-model = pickle.load(open(os.path.join(BASE_DIR, "model_xgb.pkl"), "rb"))
 encoder = pickle.load(open(os.path.join(BASE_DIR, "encoder.pkl"), "rb"))
+model = pickle.load(open(os.path.join(BASE_DIR, "model_xgb.pkl"), "rb"))
 
 @app.route('/')
 def home():
@@ -80,4 +81,5 @@ def submit():
     return render_template('Submit.html', prediction_text=text)
 
 if __name__ == "__main__":
+
     app.run(debug=True)
