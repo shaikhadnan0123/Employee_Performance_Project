@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 
+
 class MultiColumnLabelEncoder:
     def __init__(self, columns=None):
         self.columns = columns
@@ -22,4 +23,4 @@ class MultiColumnLabelEncoder:
         return X
 
     def fit_transform(self, X, y=None):
-    return self.fit(X, y).transform(X)
+        return self.fit(X, y).transform(X)
