@@ -1,4 +1,3 @@
-from encoder import MultiColumnLabelEncoder
 from flask import Flask, render_template, request
 import pickle
 import numpy as np
@@ -6,10 +5,14 @@ import pandas as pd
 import os
 from datetime import datetime
 
+# IMPORTANT: import class BEFORE loading pickle
+from encoder import MultiColumnLabelEncoder
+
 app = Flask(__name__)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# Load trained model & encoder (DO NOT CREATE THEM HERE)
 model = pickle.load(open(os.path.join(BASE_DIR, "model_xgb.pkl"), "rb"))
 encoder = pickle.load(open(os.path.join(BASE_DIR, "encoder.pkl"), "rb"))
 
@@ -83,3 +86,4 @@ def submit():
 if __name__ == "__main__":
 
     app.run(debug=True)
+
