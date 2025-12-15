@@ -22,4 +22,4 @@ class MultiColumnLabelEncoder:
         return X
 
     def fit_transform(self, X, y=None):
-        return self.fit(X).transform(X)
+    return self.fit(X, y).transform(X)
