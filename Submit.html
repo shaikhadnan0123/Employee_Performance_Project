@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Employee Productivity Prediction - Result</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <header>
+    <h1>Employee Productivity Prediction Using ML.</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/predict">Predict</a>
+    </nav>
+  </header>
+  
+  <section class="submit-bg">
+    <h2>{{ prediction_text }}</h2>
+
+    <div class="image-grid">
+      <img src="https://cdn-icons-png.flaticon.com/512/1108/1108823.png" alt="Bar Chart" />
+      <img src="https://cdn-icons-png.flaticon.com/512/1108/1108825.png" alt="Line Graph" />
+      <img src="https://cdn-icons-png.flaticon.com/512/1108/1108803.png" alt="Pie Chart" />
+      <img src="https://cdn-icons-png.flaticon.com/512/1108/1108806.png" alt="Graph" />
+      <img src="https://cdn-icons-png.flaticon.com/512/1108/1108826.png" alt="Chart" />
+      <img src="https://cdn-icons-png.flaticon.com/512/1108/1108820.png" alt="Analytics" />
+    </div>
+    <a href="/">Back to Home</a>
+  </section>
+</body>
+</html>
