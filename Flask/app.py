@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import os
 from datetime import datetime
+from multi_column_label_encoder import MultiColumnLabelEncoder
 
 # ---------------------------
 # MultiColumnLabelEncoder class (inline to avoid import issues)
