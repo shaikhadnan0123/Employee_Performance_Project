@@ -5,17 +5,47 @@ import pandas as pd
 import os
 from datetime import datetime
 
-# Base directory
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# ---------------------------
+# MultiColumnLabelEncoder class (inline to avoid import issues)
+# ---------------------------
+class MultiColumnLabelEncoder:
+    def __init__(self, columns=None):
+        self.columns = columns
+        self.encoders = {}
 
+    def fit(self, X, y=None):
+        for col in self.columns:
+            self.encoders[col] = {val: idx for idx, val in enumerate(sorted(X[col].unique()))}
+        return self
+
+    def transform(self, X):
+        X_copy = X.copy()
+        for col, mapping in self.encoders.items():
+            X_copy[col] = X_copy[col].map(mapping)
+        return X_copy
+
+    def fit_transform(self, X, y=None):
+        return self.fit(X).transform(X)
+
+# ---------------------------
+# Paths
+# ---------------------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ENCODER_PATH = os.path.join(BASE_DIR, "encoder.pkl")
+MODEL_PATH = os.path.join(BASE_DIR, "model_xgb.pkl")
+
+# ---------------------------
 # Load encoder and model
-with open(os.path.join(BASE_DIR, "encoder.pkl"), "rb") as f:
+# ---------------------------
+with open(ENCODER_PATH, "rb") as f:
     encoder = pickle.load(f)
 
-with open(os.path.join(BASE_DIR, "model_xgb.pkl"), "rb") as f:
+with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
 
-# Initialize Flask
+# ---------------------------
+# Flask app
+# ---------------------------
 app = Flask(__name__)
 
 @app.route('/')
@@ -32,6 +62,8 @@ def predict():
 
 @app.route('/submit', methods=['POST'])
 def submit():
+
+    # ---- GET FORM VALUES ----
     quarter = int(request.form['quarter'])
     department = request.form['department']
     day = request.form['day']
@@ -46,10 +78,8 @@ def submit():
     no_of_style_change = int(request.form['no_of_style_change'])
     no_of_workers = float(request.form['no_of_workers'])
 
-    date = int(datetime.now().timestamp())
-
+    # ---- CREATE DATAFRAME ----
     df = pd.DataFrame([{
-        'date': date,
         'quarter': quarter,
         'department': department,
         'day': day,
@@ -65,11 +95,13 @@ def submit():
         'no_of_workers': no_of_workers
     }])
 
-    # Only transform, do NOT fit again
+    # ---- APPLY ENCODER ----
     df_encoded = encoder.transform(df)
 
+    # ---- PREDICTION ----
     prediction = model.predict(df_encoded)[0]
 
+    # ---- RESULT LOGIC ----
     if prediction < 0.3:
         text = "The employee is averagely productive."
     elif prediction <= 0.8:
@@ -79,7 +111,9 @@ def submit():
 
     return render_template('Submit.html', prediction_text=text)
 
+# ---------------------------
+# Run Flask
+# ---------------------------
 if __name__ == "__main__":
-    # Dynamic port for Render
-    port = int(os.environ.get("PORT", 5000))
+    port = int(os.environ.get("PORT", 5000))  # for Render
     app.run(host="0.0.0.0", port=port, debug=True)
