@@ -1,3 +1,4 @@
+from encoder import MultiColumnLabelEncoder
 from flask import Flask, render_template, request
 import pickle
 import numpy as np
@@ -80,4 +81,5 @@ def submit():
     return render_template('Submit.html', prediction_text=text)
 
 if __name__ == "__main__":
+
     app.run(debug=True)
