@@ -1,13 +1,12 @@
 from flask import Flask, render_template, request
-import pickle
-import numpy as np
 import pandas as pd
+import numpy as np
 import os
 from datetime import datetime
-from multi_column_label_encoder import MultiColumnLabelEncoder
+import pickle
 
 # ---------------------------
-# MultiColumnLabelEncoder class (inline to avoid import issues)
+# Inline MultiColumnLabelEncoder
 # ---------------------------
 class MultiColumnLabelEncoder:
     def __init__(self, columns=None):
@@ -32,17 +31,18 @@ class MultiColumnLabelEncoder:
 # Paths
 # ---------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ENCODER_PATH = os.path.join(BASE_DIR, "encoder.pkl")
 MODEL_PATH = os.path.join(BASE_DIR, "model_xgb.pkl")
 
 # ---------------------------
-# Load encoder and model
+# Load model
 # ---------------------------
-with open(ENCODER_PATH, "rb") as f:
-    encoder = pickle.load(f)
-
 with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
+
+# ---------------------------
+# Create encoder instance
+# ---------------------------
+encoder = MultiColumnLabelEncoder(columns=['department', 'day'])  # replace with actual categorical columns
 
 # ---------------------------
 # Flask app
@@ -63,7 +63,6 @@ def predict():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-
     # ---- GET FORM VALUES ----
     quarter = int(request.form['quarter'])
     department = request.form['department']
@@ -97,7 +96,7 @@ def submit():
     }])
 
     # ---- APPLY ENCODER ----
-    df_encoded = encoder.transform(df)
+    df_encoded = encoder.fit_transform(df)  # Fit-transform directly
 
     # ---- PREDICTION ----
     prediction = model.predict(df_encoded)[0]
