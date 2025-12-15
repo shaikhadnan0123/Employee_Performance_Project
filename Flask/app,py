@@ -4,22 +4,19 @@ import numpy as np
 import pandas as pd
 import os
 from datetime import datetime
-from multi_column_label_encoder import MultiColumnLabelEncoder
-import os
-import pickle
 
+# Base directory
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-encoder_path = os.path.join(BASE_DIR, "encoder.pkl")
-with open(encoder_path, "rb") as f:
+# Load encoder and model
+with open(os.path.join(BASE_DIR, "encoder.pkl"), "rb") as f:
     encoder = pickle.load(f)
 
+with open(os.path.join(BASE_DIR, "model_xgb.pkl"), "rb") as f:
+    model = pickle.load(f)
+
+# Initialize Flask
 app = Flask(__name__)
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-model = pickle.load(open(os.path.join(BASE_DIR, "model_xgb.pkl"), "rb"))
-encoder = pickle.load(open(os.path.join(BASE_DIR, "encoder.pkl"), "rb"))
 
 @app.route('/')
 def home():
@@ -35,11 +32,9 @@ def predict():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-
-    # ---- GET FORM VALUES ----
     quarter = int(request.form['quarter'])
-    department = request.form['department']   # STRING
-    day = request.form['day']                 # STRING
+    department = request.form['department']
+    day = request.form['day']
     team = int(request.form['team'])
     targeted_productivity = float(request.form['targeted_productivity'])
     smv = float(request.form['smv'])
@@ -51,10 +46,8 @@ def submit():
     no_of_style_change = int(request.form['no_of_style_change'])
     no_of_workers = float(request.form['no_of_workers'])
 
-    # ---- CREATE DATE (MODEL EXPECTS IT) ----
     date = int(datetime.now().timestamp())
 
-    # ---- CREATE DATAFRAME (EXACT TRAINING COLUMNS) ----
     df = pd.DataFrame([{
         'date': date,
         'quarter': quarter,
@@ -72,13 +65,11 @@ def submit():
         'no_of_workers': no_of_workers
     }])
 
-    # ---- APPLY SAME ENCODER USED IN TRAINING ----
-    df_encoded = encoder.fit_transform(df)
+    # Only transform, do NOT fit again
+    df_encoded = encoder.transform(df)
 
-    # ---- PREDICTION ----
     prediction = model.predict(df_encoded)[0]
 
-    # ---- RESULT LOGIC ----
     if prediction < 0.3:
         text = "The employee is averagely productive."
     elif prediction <= 0.8:
@@ -89,4 +80,6 @@ def submit():
     return render_template('Submit.html', prediction_text=text)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Dynamic port for Render
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)

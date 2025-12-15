@@ -1,13 +1,12 @@
-class MultiColumnLabelEncoder:
-    def __init__(self, columns=None):
-        self.columns = columns
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
 
-    def fit(self, X, y=None):
-        return self
+cat_cols = ['department', 'day']
 
-    def transform(self, X):
-        # your transformation logic here
-        return X
+encoder = ColumnTransformer(
+    transformers=[
+        ('cat', OneHotEncoder(handle_unknown='ignore'), cat_cols)
+    ],
+    remainder='passthrough'
+)
 
-    def fit_transform(self, X, y=None):
-        return self.fit(X, y).transform(X)
