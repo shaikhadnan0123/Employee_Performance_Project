@@ -1,64 +1,103 @@
-/* Basic styles for your app */
+/* ---------------------------
+   Global styles and background
+---------------------------- */
 body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  color: rgb(189, 12, 12);
-  background-color: #1cc040;
+    background-image: url('/static/employee.png');  /* Always point to static folder */
+    background-size: cover;           /* Cover entire page */
+    background-position: center;      /* Center the image */
+    background-repeat: no-repeat;     /* No tiling */
+    min-height: 100vh;                /* Full viewport height */
+    font-family: Arial, sans-serif;
+    color: white;                     /* Readable text on dark background */
+    margin: 0;
+    padding: 0;
 }
 
-header {
-  background-color: #2c8b07;
-  padding: 1rem;
-  text-align: center;
+/* ---------------------------
+   Semi-transparent content container
+---------------------------- */
+header, section {
+    background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    max-width: 900px;
+    text-align: center;
+}
+
+/* ---------------------------
+   Navigation styling
+---------------------------- */
+nav {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 nav a {
-  color: rgb(53, 3, 66);
-  margin: 0 1rem;
-  text-decoration: none;
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    font-weight: bold;
 }
 
 nav a.active {
-  font-weight: bold;
+    text-decoration: underline;
 }
 
-section {
-  padding: 2rem;
-  text-align: center;
+/* ---------------------------
+   Header styling
+---------------------------- */
+header h1 {
+    font-size: 2rem;
+    margin: 0;
+    padding: 0.5rem;
 }
 
-.home-bg, .about-bg, .predict-bg, .submit-bg {
-  background-size: cover;
-  background-position: center;
-  min-height: 50vh;
-  color: rgb(5, 77, 95);
+/* ---------------------------
+   Section styling
+---------------------------- */
+section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
 }
 
+section p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* ---------------------------
+   Forms styling (Predict page)
+---------------------------- */
 .predict-form {
-  max-width: 400px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .predict-form label {
-  margin-top: 1rem;
+    margin-top: 1rem;
 }
 
 .predict-form input {
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
 }
 
+/* ---------------------------
+   Optional image grid
+---------------------------- */
 .image-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
 }
 
 .image-grid img {
-  width: 100px;
-  height: 100px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
 }
