@@ -8,7 +8,7 @@ body {
     background-repeat: no-repeat;     /* No tiling */
     min-height: 100vh;                /* Full viewport height */
     font-family: Arial, sans-serif;
-    color: white;                     /* Readable text on dark background */
+    color: rgb(2, 2, 56);                     /* Readable text on dark background */
     margin: 0;
     padding: 0;
 }
@@ -17,7 +17,7 @@ body {
    Semi-transparent content container
 ---------------------------- */
 header, section {
-    background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+    background-color: darksalmon; /* Black with 50% opacity */
     padding: 20px;
     margin: 20px auto;
     border-radius: 10px;
@@ -34,7 +34,7 @@ nav {
 }
 
 nav a {
-    color: rgb(19, 14, 14);
+    color: black;
     text-decoration: none;
     margin: 0 15px;
     font-weight: bold;
@@ -70,14 +70,24 @@ section p {
    Forms styling (Predict page)
 ---------------------------- */
 .predict-form {
+    background-size: cover;           /* Cover entire page */
+    background-position: center;      /* Center the image */
+    background-repeat: no-repeat;
     max-width: 400px;
     margin: 0 auto;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 .predict-form label {
     margin-top: 1rem;
+    font:  sans-serif;
+    font-size: large;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-style: normal;
+    font-weight: bold;
 }
 
 .predict-form input {
@@ -100,4 +110,71 @@ section p {
     height: 100px;
     object-fit: cover;
     border-radius: 5px;
+}
+
+
+/* Stronger light overlay */
+body::before {
+
+  box-sizing: content-box;
+  background: rgba(255, 255, 255, 0.85);
+
+  z-index: 0;
+}
+
+/* Fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply to header & sections */
+header,
+section {
+  animation: fadeInUp 0.8s ease-in-out;
+}
+
+.predict-form input,
+.predict-form select {
+  transition: all 0.3s ease;
+}
+
+.predict-form input:focus,
+.predict-form select:focus {
+  transform: scale(1.02);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+
+.predict-form button {
+  transition: all 0.3s ease;
+}
+
+.predict-form button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+nav a {
+  position: relative;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background-color: black;
+  transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
 }
