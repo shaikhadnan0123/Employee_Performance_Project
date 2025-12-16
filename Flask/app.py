@@ -1,48 +1,24 @@
 from flask import Flask, render_template, request
 import pandas as pd
-import numpy as np
 import os
 from datetime import datetime
 import pickle
-
-# ---------------------------
-# Inline MultiColumnLabelEncoder
-# ---------------------------
-class MultiColumnLabelEncoder:
-    def __init__(self, columns=None):
-        self.columns = columns
-        self.encoders = {}
-
-    def fit(self, X, y=None):
-        for col in self.columns:
-            self.encoders[col] = {val: idx for idx, val in enumerate(sorted(X[col].unique()))}
-        return self
-
-    def transform(self, X):
-        X_copy = X.copy()
-        for col, mapping in self.encoders.items():
-            X_copy[col] = X_copy[col].map(mapping)
-        return X_copy
-
-    def fit_transform(self, X, y=None):
-        return self.fit(X).transform(X)
 
 # ---------------------------
 # Paths
 # ---------------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model_xgb.pkl")
+ENCODER_PATH = os.path.join(BASE_DIR, "encoder.pkl")
 
 # ---------------------------
-# Load model
+# Load model & encoder
 # ---------------------------
 with open(MODEL_PATH, "rb") as f:
     model = pickle.load(f)
 
-# ---------------------------
-# Create encoder instance
-# ---------------------------
-encoder = MultiColumnLabelEncoder(columns=['department', 'day'])  # replace with actual categorical columns
+with open(ENCODER_PATH, "rb") as f:
+    encoder = pickle.load(f)
 
 # ---------------------------
 # Flask app
@@ -63,53 +39,65 @@ def predict():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    # ---- GET FORM VALUES ----
-    quarter = int(request.form['quarter'])
-    department = request.form['department']
-    day = request.form['day']
-    team = int(request.form['team'])
-    targeted_productivity = float(request.form['targeted_productivity'])
-    smv = float(request.form['smv'])
-    wip = float(request.form['wip'])
-    over_time = int(request.form['over_time'])
-    incentive = int(request.form['incentive'])
-    idle_time = float(request.form['idle_time'])
-    idle_men = int(request.form['idle_men'])
-    no_of_style_change = int(request.form['no_of_style_change'])
-    no_of_workers = float(request.form['no_of_workers'])
+    try:
+        # ---- GET FORM VALUES ----
+        quarter = int(request.form['quarter'])
+        department = request.form['department']
+        day = request.form['day']
+        team = int(request.form['team'])
+        targeted_productivity = float(request.form['targeted_productivity'])
+        smv = float(request.form['smv'])
+        wip = float(request.form['wip'])
+        over_time = int(request.form['over_time'])
+        incentive = int(request.form['incentive'])
+        idle_time = float(request.form['idle_time'])
+        idle_men = int(request.form['idle_men'])
+        no_of_style_change = int(request.form['no_of_style_change'])
+        no_of_workers = float(request.form['no_of_workers'])
 
-    # ---- CREATE DATAFRAME ----
-    df = pd.DataFrame([{
-        'quarter': quarter,
-        'department': department,
-        'day': day,
-        'team': team,
-        'targeted_productivity': targeted_productivity,
-        'smv': smv,
-        'wip': wip,
-        'over_time': over_time,
-        'incentive': incentive,
-        'idle_time': idle_time,
-        'idle_men': idle_men,
-        'no_of_style_change': no_of_style_change,
-        'no_of_workers': no_of_workers
-    }])
+        # ---- DATE (numeric as in training) ----
+        date_value = datetime.today().toordinal()
 
-    # ---- APPLY ENCODER ----
-    df_encoded = encoder.fit_transform(df)  # Fit-transform directly
+        # ---- CREATE DATAFRAME ----
+        df = pd.DataFrame([{
+            'date': date_value,
+            'quarter': quarter,
+            'department': department,
+            'day': day,
+            'team': team,
+            'targeted_productivity': targeted_productivity,
+            'smv': smv,
+            'wip': wip,
+            'over_time': over_time,
+            'incentive': incentive,
+            'idle_time': idle_time,
+            'idle_men': idle_men,
+            'no_of_style_change': no_of_style_change,
+            'no_of_workers': no_of_workers
+        }])
 
-    # ---- PREDICTION ----
-    prediction = model.predict(df_encoded)[0]
+        # ---- APPLY TRAINED ENCODER ----
+        # If encoder was pickled after fitting
+        if hasattr(encoder, "transform"):
+            df_encoded = encoder.transform(df)
+        else:
+            df_encoded = encoder.fit_transform(df)  # fallback if transform not present
 
-    # ---- RESULT LOGIC ----
-    if prediction < 0.3:
-        text = "The employee is averagely productive."
-    elif prediction <= 0.8:
-        text = "The employee is medium productive."
-    else:
-        text = "The employee is highly productive."
+        # ---- PREDICTION ----
+        prediction = model.predict(df_encoded)[0]
 
-    return render_template('Submit.html', prediction_text=text)
+        # ---- RESULT LOGIC ----
+        if prediction < 0.3:
+            text = "The employee is averagely productive."
+        elif prediction <= 0.8:
+            text = "The employee is medium productive."
+        else:
+            text = "The employee is highly productive."
+
+        return render_template('Submit.html', prediction_text=text)
+
+    except Exception as e:
+        return f"Error occurred: {e}"
 
 # ---------------------------
 # Run Flask
