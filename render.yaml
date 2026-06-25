@@ -3,7 +3,7 @@ services:
     name: lithos-performance-analytics
     env: python
     buildCommand: ./build.sh
-    startCommand: gunicorn --chdir backend app:app
+    startCommand: gunicorn backend.app:app
     envVars:
       - key: PORT
         value: 5000

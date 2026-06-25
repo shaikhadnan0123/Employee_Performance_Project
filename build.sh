@@ -11,10 +11,5 @@ npm run build
 cd ..
 
 echo "====================================="
-echo "Installing Python Backend Packages"
-echo "====================================="
-pip install -r backend/requirements.txt
-
-echo "====================================="
 echo "Build Process Completed Successfully!"
 echo "====================================="
