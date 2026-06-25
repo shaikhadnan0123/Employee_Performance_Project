@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import pandas as pd
 import numpy as np
 import os
@@ -48,14 +48,24 @@ with open(MODEL_PATH, "rb") as f:
 encoder = MultiColumnLabelEncoder(columns=["department", "day"])
 
 # ---------------------------
-# Flask app
+# Flask app Setup
 # ---------------------------
 app = Flask(__name__)
+
+dist_dir = os.path.abspath(os.path.join(BASE_DIR, "..", "frontend", "dist"))
+assets_dir = os.path.join(dist_dir, "assets")
 
 
 @app.route("/")
 def home():
+    if os.path.exists(os.path.join(dist_dir, "index.html")):
+        return send_from_directory(dist_dir, "index.html")
     return render_template("Home.html")
+
+
+@app.route("/assets/<path:filename>")
+def serve_assets(filename):
+    return send_from_directory(assets_dir, filename)
 
 
 @app.route("/about")
