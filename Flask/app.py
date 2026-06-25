@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import pandas as pd
 import numpy as np
 import os
@@ -148,6 +148,95 @@ def submit():
             prediction_text="Error occurred",
             error_message=str(e)
         )
+
+
+@app.route("/api/predict", methods=["POST"])
+def api_predict():
+    try:
+        # ---------------------------
+        # Get JSON values
+        # ---------------------------
+        data = request.get_json(silent=True)
+        if not data:
+            return jsonify({"success": False, "error_message": "No JSON input received"}), 400
+
+        quarter = int(data.get("quarter", 1))
+        department = data.get("department", "sweing")
+        day = data.get("day", "Monday")
+        team = int(data.get("team", 1))
+        targeted_productivity = float(data.get("targeted_productivity", 0.8))
+        smv = float(data.get("smv", 0.0))
+        wip = float(data.get("wip", 0.0))
+        over_time = int(data.get("over_time", 0))
+        incentive = int(data.get("incentive", 0))
+        idle_time = float(data.get("idle_time", 0.0))
+        idle_men = int(data.get("idle_men", 0))
+        no_of_style_change = int(data.get("no_of_style_change", 0))
+        no_of_workers = float(data.get("no_of_workers", 0.0))
+
+        # ---------------------------
+        # REQUIRED date feature
+        # ---------------------------
+        date_value = datetime.now().toordinal()
+
+        # ---------------------------
+        # Create DataFrame (ORDER MATTERS)
+        # ---------------------------
+        df = pd.DataFrame([{
+            "date": date_value,
+            "quarter": quarter,
+            "department": department,
+            "day": day,
+            "team": team,
+            "targeted_productivity": targeted_productivity,
+            "smv": smv,
+            "wip": wip,
+            "over_time": over_time,
+            "incentive": incentive,
+            "idle_time": idle_time,
+            "idle_men": idle_men,
+            "no_of_style_change": no_of_style_change,
+            "no_of_workers": no_of_workers
+        }])
+
+        # ---------------------------
+        # Encode categorical columns ONLY
+        # ---------------------------
+        df_encoded = df.copy()
+        df_encoded[["department", "day"]] = encoder.fit_transform(
+            df[["department", "day"]]
+        )[["department", "day"]]
+
+        # ---------------------------
+        # Prediction
+        # ---------------------------
+        prediction = float(model.predict(df_encoded)[0])
+
+        # ---------------------------
+        # Result message
+        # ---------------------------
+        if prediction < 0.3:
+            text = "The employee is averagely productive."
+            level = "average"
+        elif prediction <= 0.8:
+            text = "The employee is medium productive."
+            level = "medium"
+        else:
+            text = "The employee is highly productive."
+            level = "high"
+
+        return jsonify({
+            "success": True,
+            "prediction_value": round(prediction, 4),
+            "prediction_text": text,
+            "prediction_level": level
+        })
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error_message": str(e)
+        }), 500
 
 
 # ---------------------------
