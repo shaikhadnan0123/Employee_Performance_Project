@@ -1,74 +1,149 @@
-<h1 align="center">Hi 👋, I'm Shaikh Adnan</h1>
-<h3 align="center">AI & Machine Learning Enthusiast | Electronics & Communication Engineer</h3>
+📖 Overview
+# 📖 Overview
+
+**Lithos – Employee Performance Prediction System** is a modern **Full Stack AI-powered web application** that predicts employee productivity using workforce operational parameters.
+
+The application combines a **React + Vite + Tailwind CSS frontend** with a **Flask REST API backend** powered by an **XGBoost Regressor**. Inspired by geological layers, Lithos transforms workforce analytics into an intuitive, interactive dashboard that delivers real-time productivity predictions.
+
+The project demonstrates the complete AI development lifecycle—from data preprocessing and model training to API integration, frontend development, and cloud deployment on Render.
+✨ Features
+# ✨ Features
+
+- 🪨 Unique Lithos Geological Theme
+- ⚛️ Modern React + Vite Frontend
+- 🎨 Responsive UI built with Tailwind CSS
+- 🐍 Flask REST API Backend
+- 🤖 XGBoost Machine Learning Model
+- ⚡ Real-Time Employee Productivity Prediction
+- 📊 Interactive Analytics Dashboard
+- 🌐 Cloud Deployment using Render
+- 🔄 End-to-End ML Integration
+- 📱 Mobile-Friendly Design
+🛠 Tech Stack
+# 🛠 Tech Stack
+
+| Category | Technologies |
+|-----------|--------------|
+| Frontend | React.js, Vite, Tailwind CSS, HTML5, CSS3, JavaScript |
+| Backend | Flask, Python |
+| Machine Learning | XGBoost, Scikit-learn |
+| Data Processing | Pandas, NumPy |
+| Deployment | Render |
+| Version Control | Git & GitHub |
+📂 Project Structure
+Employee_Performance_Project/
+
+├── backend/
+│   ├── app.py
+│   ├── Employee_Prediction.ipynb
+│   ├── encoder.pkl
+│   ├── model_xgb.pkl
+│   ├── multi_column_label_encoder.py
+│   ├── requirements.txt
+│   ├── templates/
+│   └── static/
+│
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   └── index.html
+│
+├── build.sh
+├── render.yaml
+└── README.md
+🏗 System Architecture
+                 React + Vite + Tailwind
+                          │
+                          ▼
+                 Flask REST API
+                          │
+                          ▼
+              XGBoost Regression Model
+                          │
+                          ▼
+                Employee Productivity
+                    Prediction
+🚀 Tech Highlights
+# 🚀 Tech Highlights
+
+✔ Full Stack AI Application
+
+✔ React + Flask Integration
+
+✔ REST API Communication
+
+✔ XGBoost Regression Model
+
+✔ Responsive Tailwind CSS UI
+
+✔ Real-Time Prediction Engine
+
+✔ Render Cloud Deployment
+
+✔ End-to-End Machine Learning Workflow
+
+# 👨‍💻 Developer
+
+## Shaikh Adnan
+
+**AI & Machine Learning Engineer**
+
+📍 Hyderabad, India
+
+---
+
+## 🌐 Portfolio
+
+https://shaikh-adnan-ml-portfolio.vercel.app/
+
+---
+
+## 💼 LinkedIn
+
+https://linkedin.com/in/shaikh-adnan-270201273
+
+---
+
+## 💻 GitHub
+
+https://github.com/shaikhadnan0123
+
+---
+
+## 📧 Email
+
+adnanmujtabba5682@gmail.com
+
+---
+
+# 🤝 Connect With Me
 
 <p align="center">
-Turning ideas into intelligent applications using Machine Learning & Full-Stack Web Development.
+
+<a href="https://linkedin.com/in/shaikh-adnan-270201273">
+<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin"/>
+</a>
+
+<a href="https://github.com/shaikhadnan0123">
+<img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github"/>
+</a>
+
+<a href="https://shaikh-adnan-ml-portfolio.vercel.app/">
+<img src="https://img.shields.io/badge/Portfolio-FF6F00?style=for-the-badge"/>
+</a>
+
 </p>
 
 ---
 
-## ⚡ Animated Intro
+<div align="center">
 
-<p align="center">
-<img src="https://readme-typing-svg.herokuapp.com?color=00F7FF&size=25&center=true&vCenter=true&width=600&lines=Machine+Learning+Developer;React+%26+Flask+Web+App+Builder;AI+Enthusiast;Python+Developer;Building+Intelligent+Systems" />
-</p>
+## ⭐ If you like this project, don't forget to Star the Repository ⭐
 
----
+**Made with ❤️ by Shaikh Adnan**
 
-## 🚀 About Me
-
-- 🎓 **Education:** Electronics and Communication Engineering (ECE) Student
-- 🤖 **Core Focus:** Building end-to-end **Artificial Intelligence & Machine Learning** systems
-- 💻 **Web Architecture:** Developing responsive, dynamic frontend applications connected to robust backend ML pipelines
-- 🚀 **Mission:** Passionate about leveraging computer vision, tabular data models, and scalable modern web frameworks to solve real-world industry problems
-
----
-
-## 🛠️ Tech Stack & Skills
-
-### 🧠 Machine Learning & Data Science
-* **Languages:** Python, SQL
-* **Frameworks & Libraries:** OpenCV, TensorFlow / Keras (CNNs), XGBoost, Scikit-Learn
-* **Analytics & Tooling:** Live Parameter Tuning, Performance Metaphors, Data Visualization
-
-### 🌐 Web Development & Infrastructure
-* **Frontend:** React.js, HTML5, CSS3, Modern UI/UX Layouts (Dark/Premium Themes)
-* **Backend:** Flask Framework
-* **Cloud & Tools:** Render (Deployment), Git/GitHub
-
----
-
-## 📂 Highlighted Projects
-
-### 🪨 Lithos — Workforce Analytics & Deep Time Prediction Engine
-* **Overview:** A premium analytics platform featuring a component-driven interface built to process complex dataset features and predict workforce output metrics.
-* **Stack:** React, Flask, XGBoost Regressor
-
-### 💵 Smart Currency Authentication System
-* **Overview:** A real-time verification system built for rapid classification and counterfeit currency note recognition.
-* **Stack:** Convolutional Neural Networks (CNN), Python, Flask Backend
-
-### 🔗 Decentralized Web Storage Architecture
-* **Overview:** Secure file sharing pipeline leveraging cryptographic distributed data layers.
-* **Stack:** Blockchain Architecture, InterPlanetary File System (IPFS)
-
----
-
-## 📈 GitHub Stats
-
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=YOUR_GITHUB_USERNAME&show_icons=true&theme=tokyonight&count_private=true" alt="Adnan's GitHub Stats" />
-</p>
-
-<p align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=YOUR_GITHUB_USERNAME&theme=tokyonight" alt="Adnan's GitHub Streak" />
-</p>
-
----
-
-## 🤝 Let's Connect!
-
-- **LinkedIn:** [https://www.linkedin.com/in/shaikh-adnan-270201273]
-- **Email:** [adnanmujtabba5682@gmail.com]
-
-*Feel free to explore my repositories or reach out if you want to collaborate on open-source machine learning systems or modern React architectures!* 🚀
+</div>
